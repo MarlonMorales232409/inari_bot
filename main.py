@@ -33,18 +33,18 @@ async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    buttons = [
+    [KeyboardButton('timezone')],
+    [KeyboardButton('meet')],
+    [KeyboardButton('mail')]
+    ]
+
+    reply_markup = ReplyKeyboardMarkup(buttons, one_time_keyboard=True, resize_keyboard=True)
+
+    await update.message.reply_text('Opciones', reply_markup=reply_markup)
     await context.bot.send_message(chat_id=update.effective_chat.id, text='Inirai Online')
 
 
-async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    buttons = [
-    [KeyboardButton('timezone')],
-    [KeyboardButton('meet')]
-    ]
-
-    reply_markup = ReplyKeyboardMarkup(buttons, one_time_keyboard=True)
-
-    await context.bot.send_message(chat_id=update.effective_chat.id, text='Inari Online desde los botones', reply_markup=reply_markup)
 
 
 if __name__ == '__main__':
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     meet_handler = CommandHandler('meet', meet)
     application.add_handler(meet_handler)
 
-    application.add_handler(MessageHandler(filters.COMMAND, echo))
+    application.add_handler(MessageHandler(filters.Regex('^meet$'), meet))
 
     # ? Se ejecuta solo si los comandos introducidos no son reconocidos
     # ! Debe dejarse esta instruccion al final de la lista de comandos siempre
